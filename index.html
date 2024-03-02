@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VLC Web Player</title>
-  <script src="https://cdn.jsdelivr.net/npm/vlc.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLC.js Audio Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/@videolan/vlc.js"></script>
 </head>
 <body>
-  <div id="vlc"></div>
-  <script>
-    var vlc = new VLC("#vlc", {
-      autostart: true,
-      url: "https://zfz8n-my.sharepoint.com/:v:/g/personal/mario_zfz8n_onmicrosoft_com/ES2PQT2UUaZDtkzX2zHHM0MBy-XDuQVlqK7gOZD98SKzGw?download=1"
-    });
-  </script>
+    <div id="vlc"></div>
+    <script>
+        const vlc = require('@videolan/vlc.js');
+        const video = document.getElementById('vlc');
+
+        // VLC player ko initialize karein
+        const player = new vlc.Player(video);
+
+        // Media load hone ke baad audio tracks ko detect karein
+        player.on('mediachange', () => {
+            const audioTracks = player.media.tracks.filter(track => track.type === 'audio');
+            if (audioTracks.length > 0) {
+                // Auto detect karke pehla audio track select karein
+                const defaultAudioTrackIndex = audioTracks[0].id;
+                player.audio.track = defaultAudioTrackIndex;
+            }
+        });
+
+        // Media load karein
+        player.media = vlc.Media.fromURL('https://zfz8n-my.sharepoint.com/:v:/g/personal/mario_zfz8n_onmicrosoft_com/ES2PQT2UUaZDtkzX2zHHM0MBy-XDuQVlqK7gOZD98SKzGw?download=1'); // Replace URL_of_your_video_file.mkv with your video file URL
+    </script>
 </body>
 </html>
