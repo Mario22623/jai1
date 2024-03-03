@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VLC.js Audio Player</title>
-    <script src="https://cdn.jsdelivr.net/npm/vlc@0.0.4/vlc.min.js"></script>
+    <title>Video Player with Audio Track Switching</title>
+    <style>
+        #player-container {
+            width: 640px;
+            margin: 20px auto;
+        }
+
+        #video {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    <div id="vlc"></div>
-    <script>
-        const vlc = require('@videolan/vlc.js');
-        const video = document.getElementById('vlc');
+    <div id="player-container">
+        <video id="video" controls>
+            <source src="https://zfz8n-my.sharepoint.com/:v:/g/personal/mario_zfz8n_onmicrosoft_com/ES2PQT2UUaZDtkzX2zHHM0MBy-XDuQVlqK7gOZD98SKzGw?download=1" type="video/mp4"> 
+            Your browser does not support the video tag.
+        </video>
 
-        // VLC player ko initialize karein
-        const player = new vlc.Player(video);
+        <select id="audio-tracks">
+        </select>
 
-        // Media load hone ke baad audio tracks ko detect karein
-        player.on('mediachange', () => {
-            const audioTracks = player.media.tracks.filter(track => track.type === 'audio');
-            if (audioTracks.length > 0) {
-                // Auto detect karke pehla audio track select karein
-                const defaultAudioTrackIndex = audioTracks[0].id;
-                player.audio.track = defaultAudioTrackIndex;
-            }
-        });
+        <button id="switch-audio">Switch Audio Track</button>
+    </div>
 
-        // Media load karein
-        player.media = vlc.Media.fromURL('https://zfz8n-my.sharepoint.com/:v:/g/personal/mario_zfz8n_onmicrosoft_com/ES2PQT2UUaZDtkzX2zHHM0MBy-XDuQVlqK7gOZD98SKzGw?download=1'); // Replace URL_of_your_video_file.mkv with your video file URL
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
